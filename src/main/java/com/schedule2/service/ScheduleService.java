@@ -6,6 +6,9 @@ import com.schedule2.entity.Schedule;
 import com.schedule2.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // 일정 관련 비즈니스 로직을 처리하는 서비스 클래스
 @Service
 public class ScheduleService {
@@ -46,5 +49,31 @@ public class ScheduleService {
 
         // 5. 응답 DTO로 반환하기
         return responseDto;
+    }
+
+    // 일정 전체 조회 기능
+    public List<ScheduleResponseDto> getAllSchedules() {
+
+        // 1. DB에서 일정 전체 조회하기
+        List<Schedule> scheduleList = scheduleRepository.findAll();
+
+        // 2. 응답 DTO들을 담을 빈 리스트 만들기
+        List<ScheduleResponseDto> responseDtoList = new ArrayList<>();
+
+        // 3. 조회한 일정들을 하나씩 꺼내서 응답 DTO로 바꾸기
+        for (Schedule schedule : scheduleList) {
+            ScheduleResponseDto responseDto = new ScheduleResponseDto(
+                    schedule.getId(),
+                    schedule.getUsername(),
+                    schedule.getTitle(),
+                    schedule.getContents(),
+                    schedule.getCreatedAt(),
+                    schedule.getUpdatedAt()
+            );
+            // 4. 새로 만들어진 응답 DTO를 리스트에 담기
+            responseDtoList.add(responseDto);
+        }
+        // 5. 최종 응답 리스트 반환하기
+        return responseDtoList;
     }
 }
