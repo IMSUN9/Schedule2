@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 // 일정 관련 비즈니스 로직을 처리하는 서비스 클래스
 @Service
@@ -75,5 +76,32 @@ public class ScheduleService {
         }
         // 5. 최종 응답 리스트 반환하기
         return responseDtoList;
+    }
+
+    // 일정 단건 조회 기능
+    public ScheduleResponseDto getScheduleById(Long scheduleId) {
+
+        // 1. scheduleId로 DB에서 일정 조회하기
+        Optional<Schedule> optionalSchedule = scheduleRepository.findById(scheduleId);
+
+        // 2. 조회 결과가 있는지 확인하기
+        if (optionalSchedule.isEmpty()) {
+            throw new IllegalArgumentException("해당 일정이 존재하지 않습니다.");
+        }
+
+        // 3. Optional 안에 들어있는 실제 Schedule 꺼내기
+        Schedule schedule = optionalSchedule.get();
+
+        // 4. 조회한 엔티티를 응답 DTO로 바꾸기
+        ScheduleResponseDto responseDto = new ScheduleResponseDto(
+                schedule.getId(),
+                schedule.getUsername(),
+                schedule.getTitle(),
+                schedule.getContents(),
+                schedule.getCreatedAt(),
+                schedule.getUpdatedAt()
+        );
+        // 5. 응답 DTO 반환하기
+        return responseDto;
     }
 }

@@ -18,7 +18,7 @@ public class ScheduleController {
     private ScheduleService scheduleService;
 
     // 생성자
-    // 컨틍롤러가 서비스 객체를 전달받는 생성자
+    // 컨트롤러가 서비스 객체를 전달받는 생성자
     public ScheduleController(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
     }
@@ -40,6 +40,20 @@ public class ScheduleController {
 
         // 2. 조회 결과를 HTTP 응답 객체로 만들기
         ResponseEntity<List<ScheduleResponseDto>> responseEntity = ResponseEntity.ok(responseDtoList);
+
+        // 3. 최종 응답 반환하기
+        return responseEntity;
+    }
+
+    // 일정 단건 조회 요청을 처리하는 메서드
+    @GetMapping("/{scheduleId}")
+    public ResponseEntity<ScheduleResponseDto> getScheduleById(@PathVariable Long scheduleId) {
+
+        // 1. 서비스에게 scheduleId로 일정 조회 맡기기
+        ScheduleResponseDto responseDto = scheduleService.getScheduleById(scheduleId);
+
+        // 2. 조회 결과를 HTTP 응답 객체로 만들기
+        ResponseEntity<ScheduleResponseDto> responseEntity = ResponseEntity.ok(responseDto);
 
         // 3. 최종 응답 반환하기
         return responseEntity;
