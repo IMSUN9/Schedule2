@@ -142,4 +142,20 @@ public class ScheduleService {
         // 7. 응답 DTO 반환하기
         return responseDto;
     }
+
+    // 일정 삭제 기능
+    public void deleteSchedule(Long scheduleId) {
+
+        // 1. 해당 일정이 실제로 존재하는지 확인하기
+        boolean exists = scheduleRepository.existsById(scheduleId);
+
+        // 2. 존재하지 않으면 예외 발생시키기
+        if (!exists) {
+            throw new IllegalArgumentException("해당 일정이 존재하지 않습니다.");
+        }
+
+        // 3. scheduleId로 일정 삭제하기
+        scheduleRepository.deleteById(scheduleId);
+    }
+
 }

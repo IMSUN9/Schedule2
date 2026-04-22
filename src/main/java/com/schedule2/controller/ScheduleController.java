@@ -73,4 +73,18 @@ public class ScheduleController {
         // 3. 최종 응답 반환하기
         return responseEntity;
     }
+
+    // 일정 삭제 요청을 처리하는 메서드
+    @DeleteMapping("/{scheduleId}")
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Long scheduleId) {
+
+        // 1. 서비스에게 일정 삭제 작업 맡기기
+        scheduleService.deleteSchedule(scheduleId);
+
+        // 2. 내용 없는 성공 응답 객체 만들기
+        ResponseEntity<Void> responseEntity = ResponseEntity.noContent().build();
+
+        // 3. 최종 응답 반환하기
+        return responseEntity;
+    }
 }
