@@ -4,10 +4,9 @@ import com.schedule2.dto.UserCreateRequestDto;
 import com.schedule2.dto.UserResponseDto;
 import com.schedule2.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 // 유저 관련 요청을 가장 먼저 받는 컨트롤러 클래스
 @RestController
@@ -38,5 +37,18 @@ public class UserController {
         return responseEntity;
     }
 
+    // 유저 전체 조회 요청을 처리하는 메서드
+    @GetMapping
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+
+        // 1. 서비스에게 유저 전체 조회 작업 맡기기
+        List<UserResponseDto> responseDtoList = userService.getAllUsers();
+
+        // 2. 조회 결과를 HTTP 응답 객체로 만들기
+        ResponseEntity<List<UserResponseDto>> responseEntity = ResponseEntity.ok(responseDtoList);
+
+        // 3. 최종 응답 반환하기
+        return responseEntity;
+    }
 
 }

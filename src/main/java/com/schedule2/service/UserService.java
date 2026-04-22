@@ -6,6 +6,9 @@ import com.schedule2.entity.User;
 import com.schedule2.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // 유저 관련 비즈니스 로직을 처리하는 서비스 클래스
 @Service
 public class UserService {
@@ -44,4 +47,32 @@ public class UserService {
         // 5. 응답 DTO 반환하기
         return userResponseDto;
     }
+
+    // 유저 전체 조회 기능
+    public List<UserResponseDto> getAllUsers() {
+
+        // 1. DB에서 유저 전체 조회하기
+        List<User> userList = userRepository.findAll();
+
+        // 2. 응답 DTO들을 담을 빈 리스트 만들기
+        List<UserResponseDto> responseDtoList = new ArrayList<>();
+
+        // 3. 조회한 유저들을 하나씩 꺼내서 응답 DTO로 바꾸기
+        for (User user : userList) {
+            UserResponseDto userResponseDto = new UserResponseDto(
+                    user.getId(),
+                    user.getUsername(),
+                    user.getEmail(),
+                    user.getCreatedAt(),
+                    user.getUpdatedAt()
+            );
+
+            // 4. 만들어진 응답 DTO를 리스트에 담기
+            responseDtoList.add(userResponseDto);
+        }
+
+        // 5. 최종 응답 리스트 반환하기
+        return responseDtoList;
+    }
+
 }
