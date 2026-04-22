@@ -2,9 +2,11 @@ package com.schedule2.service;
 
 import com.schedule2.dto.ScheduleCreateRequestDto;
 import com.schedule2.dto.ScheduleResponseDto;
+import com.schedule2.dto.ScheduleUpdateRequestDto;
 import com.schedule2.entity.Schedule;
 import com.schedule2.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +104,42 @@ public class ScheduleService {
                 schedule.getUpdatedAt()
         );
         // 5. 응답 DTO 반환하기
+        return responseDto;
+    }
+
+    // 일정 수정 기능
+    @Transactional
+    public ScheduleResponseDto updateSchedule(Long scheduleId, ScheduleUpdateRequestDto requestDto) {
+
+        // 1. scheduleId로 기존 일정 조회하기
+        Optional<Schedule> optionalSchedule = scheduleRepository.findById(scheduleId);
+
+        // 2. 해당 일정이 없으면 예외 발생시키기
+        if (optionalSchedule.isEmpty()) {
+            throw new IllegalArgumentException("해당 일정이 존재하지 않습니다.");
+        }
+
+        // 3. Optional 안에 들어있는 실제 Schedule 꺼내기
+        Schedule schedule = optionalSchedule.get();
+
+        // 4. 요청 값 꺼내기
+        String username = requestDto.getUsername();
+        String title = requestDto.getTitle();
+        String contents = requestDto.getContents();
+
+        // 5. 기존 일정 내용 수정하기
+        schedule.updateSchedule(username, title, contents);
+
+        // 6. 수정된 엔티티를 응답 DTO로 바꾸기
+        ScheduleResponseDto responseDto = new ScheduleResponseDto(
+                schedule.getId(),
+                schedule.getUsername(),
+                schedule.getTitle(),
+                schedule.getContents(),
+                schedule.getCreatedAt(),
+                schedule.getUpdatedAt()
+        );
+        // 7. 응답 DTO 반환하기
         return responseDto;
     }
 }

@@ -2,6 +2,7 @@ package com.schedule2.controller;
 
 import com.schedule2.dto.ScheduleCreateRequestDto;
 import com.schedule2.dto.ScheduleResponseDto;
+import com.schedule2.dto.ScheduleUpdateRequestDto;
 import com.schedule2.service.ScheduleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,6 +54,20 @@ public class ScheduleController {
         ScheduleResponseDto responseDto = scheduleService.getScheduleById(scheduleId);
 
         // 2. 조회 결과를 HTTP 응답 객체로 만들기
+        ResponseEntity<ScheduleResponseDto> responseEntity = ResponseEntity.ok(responseDto);
+
+        // 3. 최종 응답 반환하기
+        return responseEntity;
+    }
+
+    // 일정 수정 요청을 처리하는 메서드
+    @PutMapping("/{scheduleId}")
+    public ResponseEntity<ScheduleResponseDto> updateSchedule(@PathVariable Long scheduleId, @RequestBody ScheduleUpdateRequestDto requestDto) {
+
+        // 1. 서비스에게 일정 수정 작업 맡기기
+        ScheduleResponseDto responseDto = scheduleService.updateSchedule(scheduleId, requestDto);
+
+        // 2. 수정 결과를 HTTP 응답 객체로 만들기
         ResponseEntity<ScheduleResponseDto> responseEntity = ResponseEntity.ok(responseDto);
 
         // 3. 최종 응답 반환하기
