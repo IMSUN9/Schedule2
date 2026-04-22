@@ -2,8 +2,10 @@ package com.schedule2.service;
 
 import com.schedule2.dto.UserCreateRequestDto;
 import com.schedule2.dto.UserResponseDto;
+import com.schedule2.dto.UserUpdateRequestDto;
 import com.schedule2.entity.User;
 import com.schedule2.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -103,6 +105,39 @@ public class UserService {
         return responseDto;
     }
 
+    // 유저 수정 기능
+    @Transactional
+    public UserResponseDto updateUser(Long userId, UserUpdateRequestDto requestDto) {
 
+        // 1. userId로 기존 유저 조회하기
+        Optional<User> optionalUser = userRepository.findById(userId);
+
+        // 2. 해당 유저가 없으면 예외 발생시키기
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("해당 유저가 존재하지 않습니다.");
+        }
+
+        // 3. Optional 안에 들어있는 실제 User 꺼내기
+        User user = optionalUser.get();
+
+        // 4. 요청값 꺼내기
+        String username = requestDto.getUsername();
+        String email = requestDto.getEmail();
+
+        // 5. 기존 유저 정보 수정하기
+        user.updateUser(username, email);
+
+        // 6. 수정된 엔티티를 응답 DTO로 바꾸기
+        UserResponseDto responseDto = new UserResponseDto(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
+
+        //7. 응답 DTO 반환하기
+        return responseDto;
+    }
 
 }

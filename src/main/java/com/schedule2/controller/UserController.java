@@ -2,6 +2,7 @@ package com.schedule2.controller;
 
 import com.schedule2.dto.UserCreateRequestDto;
 import com.schedule2.dto.UserResponseDto;
+import com.schedule2.dto.UserUpdateRequestDto;
 import com.schedule2.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -65,6 +66,17 @@ public class UserController {
         return responseEntity;
     }
 
+    // 유저 수정 요청을 처리하는 메서드
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long userId, @RequestBody UserUpdateRequestDto requestDto) {
 
+        // 1. 서비스에게 유저 수정 작업 맡기기
+        UserResponseDto responseDto = userService.updateUser(userId, requestDto);
 
+        // 2. 수정 결과를 HTTP 응답 객체로 만들기
+        ResponseEntity<UserResponseDto> responseEntity = ResponseEntity.ok(responseDto);
+
+        // 3. 최종 응답 반환하기
+        return responseEntity;
+    }
 }
