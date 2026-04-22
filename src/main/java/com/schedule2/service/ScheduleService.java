@@ -159,18 +159,12 @@ public class ScheduleService {
         // 7. Optional 안에 들어있는 실제 User 꺼내기
         User user = optionalUser.get();
 
-        // 8. 조회한 유저명 꺼내기
-        String username = user.getUsername();
-
         // 9. 나머지 요청값 꺼내기
         String title = requestDto.getTitle();
         String contents = requestDto.getContents();
 
-        // 10. 기존 일정 내용 수정하기
-        schedule.updateSchedule(username, title, contents);
-
-        // 11. 일정과 유저 다시 연결하기
-        schedule.setUser(user);
+        // 10. User 엔티티를 바로 사용해서 일정 정보 수정하기
+        schedule.updateSchedule(user, title, contents);
 
         // 12. 수정된 엔티티를 응답 DTO로 바꾸기
         ScheduleResponseDto responseDto = new ScheduleResponseDto(
