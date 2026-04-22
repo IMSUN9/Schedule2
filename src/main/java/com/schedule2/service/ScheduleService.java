@@ -50,18 +50,12 @@ public class ScheduleService {
         // 4. Optional 안에 들어있는 실제 User 꺼내기
         User user = optionalUser.get();
 
-        // 5. 조회한 유저명 꺼내기
-        String username = user.getUsername();
-
         // 6. 나머지 요청값 꺼내기
         String title = requestDto.getTitle();
         String contents = requestDto.getContents();
 
-        // 7. Schedule 엔티티 만들기
-        Schedule schedule = new Schedule(username, title, contents);
-
-        // 8. Schedule 과 User 연결하기
-        schedule.setUser(user);
+        // 7. User 엔티티를 바로 사용해서 Schedule 엔티티 만들기
+        Schedule schedule = new Schedule(user, title, contents);
 
         // 9. DB에 저장하기
         Schedule savedSchedule = scheduleRepository.save(schedule);

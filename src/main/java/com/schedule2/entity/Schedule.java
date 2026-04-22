@@ -39,6 +39,14 @@ public class Schedule extends BaseEntity {
         this.contents = contents;
     }
 
+    // User 엔티티를 바로 받아서 일정을 생성하는 생성자
+    public Schedule(User user, String title, String contents) {
+        this.user = user;
+        this.username = user.getUsername();
+        this.title = title;
+        this.contents = contents;
+    }
+
 
     // 기능
 

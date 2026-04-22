@@ -6,7 +6,6 @@ public class ScheduleCreateRequestDto {
     // 속성
     // 일정 작성 유저 ID
     private Long userId;
-    private String username;
     private String title;
     private String contents;
 
@@ -17,10 +16,6 @@ public class ScheduleCreateRequestDto {
 
     public Long getUserId() {
         return userId;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public String getTitle() {

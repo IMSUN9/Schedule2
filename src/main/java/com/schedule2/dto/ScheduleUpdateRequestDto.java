@@ -5,7 +5,6 @@ public class ScheduleUpdateRequestDto {
 
     // 속성
     private Long userId;
-    private String username;
     private String title;
     private String contents;
 
@@ -16,10 +15,6 @@ public class ScheduleUpdateRequestDto {
     // 기능
     public Long getUserId() {
         return userId;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public String getTitle() {
