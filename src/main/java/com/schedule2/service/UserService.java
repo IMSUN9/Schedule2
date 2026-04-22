@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 // 유저 관련 비즈니스 로직을 처리하는 서비스 클래스
 @Service
@@ -74,5 +75,34 @@ public class UserService {
         // 5. 최종 응답 리스트 반환하기
         return responseDtoList;
     }
+
+    // 유저 단건 조회 기능
+    public UserResponseDto getUserById(Long userId) {
+
+        // 1. userId로 DB에서 유저 조회하기
+        Optional<User> optionalUser = userRepository.findById(userId);
+
+        // 2. 해당 유저가 없으면 예외 발셍시키기
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("해당 유저가 존재하지 않습니다.");
+        }
+
+        // 3. Optional 안에 들어있는 실제 User 꺼내기
+        User user = optionalUser.get();
+
+        // 4. 조회한 엔티티를 응답 DTO로 바꾸기
+        UserResponseDto responseDto = new UserResponseDto(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
+
+        // 5. 응답 DTO 반환하기
+        return responseDto;
+    }
+
+
 
 }

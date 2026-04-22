@@ -51,4 +51,20 @@ public class UserController {
         return responseEntity;
     }
 
+    // 유저 단건 조회 요청을 처리하는 메서드
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long userId) {
+
+        // 1. 서비스에게 userId로 유저 조회 맡기기
+        UserResponseDto responseDto = userService.getUserById(userId);
+
+        // 2. 조회 결과를 HTTP 응답 객체로 만들기
+        ResponseEntity<UserResponseDto> responseEntity = ResponseEntity.ok(responseDto);
+
+        // 3. 최종 응답 반환하기
+        return responseEntity;
+    }
+
+
+
 }
