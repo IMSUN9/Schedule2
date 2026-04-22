@@ -16,6 +16,11 @@ public class Schedule extends BaseEntity {
     @Column(nullable = false)
     private String username;
 
+    // 일정과 연결된 유저 엔티티
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(nullable = false)
     private String title;
 
@@ -51,6 +56,16 @@ public class Schedule extends BaseEntity {
 
     public String getContents() {
         return contents;
+    }
+
+    // 연결된 유저 조회
+    public User getUser() {
+        return user;
+    }
+
+    // 일정과 유저를 연결하는 기능
+    public void setUser(User user) {
+        this.user = user;
     }
 
     // 일정 수정 기능
