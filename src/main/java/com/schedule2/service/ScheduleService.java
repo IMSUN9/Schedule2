@@ -69,6 +69,7 @@ public class ScheduleService {
         // 10. 저장 결과를 응답 DTO로 바꾸기
         ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto(
                 savedSchedule.getId(),
+                savedSchedule.getUserId(),
                 savedSchedule.getUsername(),
                 savedSchedule.getTitle(),
                 savedSchedule.getContents(),
@@ -93,6 +94,7 @@ public class ScheduleService {
         for (Schedule schedule : scheduleList) {
             ScheduleResponseDto responseDto = new ScheduleResponseDto(
                     schedule.getId(),
+                    schedule.getUserId(),
                     schedule.getUsername(),
                     schedule.getTitle(),
                     schedule.getContents(),
@@ -123,6 +125,7 @@ public class ScheduleService {
         // 4. 조회한 엔티티를 응답 DTO로 바꾸기
         ScheduleResponseDto responseDto = new ScheduleResponseDto(
                 schedule.getId(),
+                schedule.getUserId(),
                 schedule.getUsername(),
                 schedule.getTitle(),
                 schedule.getContents(),
@@ -178,6 +181,7 @@ public class ScheduleService {
         // 12. 수정된 엔티티를 응답 DTO로 바꾸기
         ScheduleResponseDto responseDto = new ScheduleResponseDto(
                 schedule.getId(),
+                schedule.getUserId(),
                 schedule.getUsername(),
                 schedule.getTitle(),
                 schedule.getContents(),

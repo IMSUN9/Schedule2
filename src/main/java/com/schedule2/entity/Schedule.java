@@ -74,4 +74,14 @@ public class Schedule extends BaseEntity {
         this.title = title;
         this.contents = contents;
     }
+
+    // 연결된 유저 ID 조회
+    public Long getUserId() {
+        if (user == null) {
+            return null;
+        }
+
+        return user.getId();
+    }
+
 }

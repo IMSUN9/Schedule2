@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class ScheduleResponseDto {
 
     // 속성
+    private Long userId;
     private Long id;
     private String username;
     private String title;
@@ -18,8 +19,9 @@ public class ScheduleResponseDto {
     // 생성자
     public ScheduleResponseDto() {}
 
-    public ScheduleResponseDto(Long id, String username, String title, String contents, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ScheduleResponseDto(Long id,Long userId, String username, String title, String contents, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
+        this.userId = userId;
         this.username = username;
         this.title = title;
         this.contents = contents;
@@ -52,4 +54,9 @@ public class ScheduleResponseDto {
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
+
+    public Long getUserId() {
+        return userId;
+    }
+
 }
