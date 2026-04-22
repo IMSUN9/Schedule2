@@ -1,5 +1,6 @@
 package com.schedule2.controller;
 
+import com.schedule2.dto.SignupRequestDto;
 import com.schedule2.dto.UserCreateRequestDto;
 import com.schedule2.dto.UserResponseDto;
 import com.schedule2.dto.UserUpdateRequestDto;
@@ -89,6 +90,20 @@ public class UserController {
 
         // 2. 내용 없는 성공 응답 객체 만들기
         ResponseEntity<Void> responseEntity = ResponseEntity.noContent().build();
+
+        // 3. 최종 응답 반환하기
+        return responseEntity;
+    }
+
+    // 회원가입 요청을 처리하는 메서드
+    @PostMapping("/signup")
+    public ResponseEntity<UserResponseDto> signup(@RequestBody SignupRequestDto requestDto) {
+
+        // 1. 서비스에게 회원가입 작업 맡기기
+        UserResponseDto responseDto = userService.signup(requestDto);
+
+        // 2. 회원가입 결과를 HTTP 응답 객체로 만들기
+        ResponseEntity<UserResponseDto> responseEntity = ResponseEntity.ok(responseDto);
 
         // 3. 최종 응답 반환하기
         return responseEntity;

@@ -1,5 +1,6 @@
 package com.schedule2.service;
 
+import com.schedule2.dto.SignupRequestDto;
 import com.schedule2.dto.UserCreateRequestDto;
 import com.schedule2.dto.UserResponseDto;
 import com.schedule2.dto.UserUpdateRequestDto;
@@ -153,6 +154,38 @@ public class UserService {
 
         // 3. userId로 유저 삭제하기
         userRepository.deleteById(userId);
+    }
+
+    // 회원가입 기능
+    public UserResponseDto signup(SignupRequestDto requestDto) {
+
+        // 1. 요청값 꺼내기
+        String username = requestDto.getUsername();
+        String email = requestDto.getEmail();
+        String password = requestDto.getPassword();
+
+        // 2. 비밀번호 8자 이상인지 검사하기
+        if (password.length() < 8) {
+            throw new IllegalArgumentException("비밀번호는 8자 이상이어야 합니다.");
+        }
+
+        // 3. 회원가입용 User 엔티티 만들기
+        User user = new User(username,email,password);
+
+        // 4. DB에 저장하기
+        User savedUser = userRepository.save(user);
+
+        // 5. 저장된 결과를 응답 DTO로 바꾸기
+        UserResponseDto responseDto = new UserResponseDto(
+                savedUser.getId(),
+                savedUser.getUsername(),
+                savedUser.getEmail(),
+                savedUser.getCreatedAt(),
+                savedUser.getUpdatedAt()
+        );
+
+        // 6. 응답 DTO 반환하기
+        return responseDto;
     }
 
 }

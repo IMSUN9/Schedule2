@@ -18,6 +18,10 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String email;
 
+    // 비밀번호
+    @Column(nullable = false)
+    private String password;
+
     // 생성자
     // JPA 용
     public User() {
@@ -27,6 +31,13 @@ public class User extends BaseEntity {
     public User(String username, String email) {
         this.username = username;
         this.email = email;
+    }
+
+    // 회원가입 시 비밀번호까지 포함해서 유저를 생성하는 생성자
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
     // 기능
