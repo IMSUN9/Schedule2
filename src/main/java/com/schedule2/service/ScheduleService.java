@@ -70,7 +70,7 @@ public class ScheduleService {
         ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto(
                 savedSchedule.getId(),
                 savedSchedule.getUserId(),
-                savedSchedule.getUsername(),
+                savedSchedule.getUserNameFromUser(),
                 savedSchedule.getTitle(),
                 savedSchedule.getContents(),
                 savedSchedule.getCreatedAt(),
@@ -95,7 +95,7 @@ public class ScheduleService {
             ScheduleResponseDto responseDto = new ScheduleResponseDto(
                     schedule.getId(),
                     schedule.getUserId(),
-                    schedule.getUsername(),
+                    schedule.getUserNameFromUser(),
                     schedule.getTitle(),
                     schedule.getContents(),
                     schedule.getCreatedAt(),
@@ -126,7 +126,7 @@ public class ScheduleService {
         ScheduleResponseDto responseDto = new ScheduleResponseDto(
                 schedule.getId(),
                 schedule.getUserId(),
-                schedule.getUsername(),
+                schedule.getUserNameFromUser(),
                 schedule.getTitle(),
                 schedule.getContents(),
                 schedule.getCreatedAt(),
@@ -182,7 +182,7 @@ public class ScheduleService {
         ScheduleResponseDto responseDto = new ScheduleResponseDto(
                 schedule.getId(),
                 schedule.getUserId(),
-                schedule.getUsername(),
+                schedule.getUserNameFromUser(),
                 schedule.getTitle(),
                 schedule.getContents(),
                 schedule.getCreatedAt(),

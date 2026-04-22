@@ -84,4 +84,13 @@ public class Schedule extends BaseEntity {
         return user.getId();
     }
 
+    // 연결된 유저명 조회
+    public String getUserNameFromUser() {
+        if (user == null) {
+            return null;
+        }
+
+        return user.getUsername();
+    }
+
 }
