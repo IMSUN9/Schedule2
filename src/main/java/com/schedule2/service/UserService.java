@@ -140,4 +140,19 @@ public class UserService {
         return responseDto;
     }
 
+    // 유저 삭제 기능
+    public void deleteUser(Long userId) {
+
+        // 1. 해당 유저가 실제로 존재하는지 확인하기
+        boolean exists = userRepository.existsById(userId);
+
+        // 2. 존재하지 않으면 예외 발생시키기
+        if (!exists) {
+            throw new IllegalArgumentException("해당 유저가 존재하지 않습니다.");
+        }
+
+        // 3. userId로 유저 삭제하기
+        userRepository.deleteById(userId);
+    }
+
 }
