@@ -8,13 +8,9 @@ import jakarta.persistence.*;
 public class Schedule extends BaseEntity {
 
     // 속성
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private String username;
 
     // 일정과 연결된 유저 엔티티
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,34 +24,27 @@ public class Schedule extends BaseEntity {
     private String contents;
 
     // 생성자
-
     // jpa용
     public Schedule() {}
-
-    // 일정 생성 시 사용하는 생성자
-    public Schedule(String username, String title, String contents) {
-        this.username = username;
-        this.title = title;
-        this.contents = contents;
-    }
 
     // User 엔티티를 바로 받아서 일정을 생성하는 생성자
     public Schedule(User user, String title, String contents) {
         this.user = user;
-        this.username = user.getUsername();
         this.title = title;
         this.contents = contents;
     }
 
-
     // 기능
-
     public Long getId() {
         return id;
     }
 
     public String getUsername() {
-        return username;
+        if (user == null) {
+            return null;
+        }
+
+        return user.getUsername();
     }
 
     public String getTitle() {
@@ -76,17 +65,9 @@ public class Schedule extends BaseEntity {
         this.user = user;
     }
 
-    // 일정 수정 기능
-    public void updateSchedule(String username, String title, String contents) {
-        this.username = username;
-        this.title = title;
-        this.contents = contents;
-    }
-
     // User 엔티티를 바로 받아서 일정 정보를 수정하는 기능
     public void updateSchedule(User user, String title, String contents) {
         this.user = user;
-        this.username = user.getUsername();
         this.title = title;
         this.contents = contents;
     }
