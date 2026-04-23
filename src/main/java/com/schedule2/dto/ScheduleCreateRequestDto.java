@@ -4,8 +4,6 @@ package com.schedule2.dto;
 public class ScheduleCreateRequestDto {
 
     // 속성
-    // 일정 작성 유저 ID
-    private Long userId;
     private String title;
     private String contents;
 
@@ -13,11 +11,6 @@ public class ScheduleCreateRequestDto {
     public ScheduleCreateRequestDto() {}
 
     // 기능
-
-    public Long getUserId() {
-        return userId;
-    }
-
     public String getTitle() {
         return title;
     }

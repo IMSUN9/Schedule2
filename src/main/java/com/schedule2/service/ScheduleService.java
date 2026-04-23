@@ -32,49 +32,6 @@ public class ScheduleService {
     }
 
     // 기능
-
-    // 일정 생성 기능
-    public ScheduleResponseDto createSchedule(ScheduleCreateRequestDto requestDto) {
-
-       // 1. 요청값에서 userId 꺼내기
-        Long userId = requestDto.getUserId();
-
-        // 2. userId로 유저 조회하기
-        Optional<User> optionalUser = userRepository.findById(userId);
-
-        // 3. 해당 유저가 없으면 예외 발생시키기
-        if (optionalUser.isEmpty()) {
-            throw new IllegalArgumentException("해당 유저가 존재하지 않습니다.");
-        }
-
-        // 4. Optional 안에 들어있는 실제 User 꺼내기
-        User user = optionalUser.get();
-
-        // 6. 나머지 요청값 꺼내기
-        String title = requestDto.getTitle();
-        String contents = requestDto.getContents();
-
-        // 7. User 엔티티를 바로 사용해서 Schedule 엔티티 만들기
-        Schedule schedule = new Schedule(user, title, contents);
-
-        // 9. DB에 저장하기
-        Schedule savedSchedule = scheduleRepository.save(schedule);
-
-        // 10. 저장 결과를 응답 DTO로 바꾸기
-        ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto(
-                savedSchedule.getId(),
-                savedSchedule.getUserId(),
-                savedSchedule.getUserNameFromUser(),
-                savedSchedule.getTitle(),
-                savedSchedule.getContents(),
-                savedSchedule.getCreatedAt(),
-                savedSchedule.getUpdatedAt()
-        );
-
-        // 11. 응답 DTO 반환하기
-        return scheduleResponseDto;
-    }
-
     // 로그인한 유저 ID를 기준으로 일정 생성하는 기능
     public ScheduleResponseDto createScheduleWithLoginUser(Long loginUserId, ScheduleCreateRequestDto requestDto) {
 
@@ -169,57 +126,6 @@ public class ScheduleService {
         return responseDto;
     }
 
-    // 일정 수정 기능
-    @Transactional
-    public ScheduleResponseDto updateSchedule(Long scheduleId, ScheduleUpdateRequestDto requestDto) {
-
-        // 1. scheduleId로 기존 일정 조회하기
-        Optional<Schedule> optionalSchedule = scheduleRepository.findById(scheduleId);
-
-        // 2. 해당 일정이 없으면 예외 발생시키기
-        if (optionalSchedule.isEmpty()) {
-            throw new IllegalArgumentException("해당 일정이 존재하지 않습니다.");
-        }
-
-        // 3. Optional 안에 들어있는 실제 Schedule 꺼내기
-        Schedule schedule = optionalSchedule.get();
-
-        // 4. 요청 값에서 userId 꺼내기
-        Long userId = requestDto.getUserId();
-
-        // 5. userId로 유저 조회하기
-        Optional<User> optionalUser = userRepository.findById(userId);
-
-        // 6. 해당 유저가 없으면 예외 발생시키기
-        if (optionalUser.isEmpty()) {
-            throw new IllegalArgumentException("해당 유저가 존재하지 않습니다.");
-        }
-
-        // 7. Optional 안에 들어있는 실제 User 꺼내기
-        User user = optionalUser.get();
-
-        // 9. 나머지 요청값 꺼내기
-        String title = requestDto.getTitle();
-        String contents = requestDto.getContents();
-
-        // 10. User 엔티티를 바로 사용해서 일정 정보 수정하기
-        schedule.updateSchedule(user, title, contents);
-
-        // 12. 수정된 엔티티를 응답 DTO로 바꾸기
-        ScheduleResponseDto responseDto = new ScheduleResponseDto(
-                schedule.getId(),
-                schedule.getUserId(),
-                schedule.getUserNameFromUser(),
-                schedule.getTitle(),
-                schedule.getContents(),
-                schedule.getCreatedAt(),
-                schedule.getUpdatedAt()
-        );
-
-        // 13. 응답 DTO 반환하기
-        return responseDto;
-    }
-
     // 로그인한 유저 ID를 기준으로 일정 수정하는 기능
     @Transactional
     public ScheduleResponseDto updateScheduleWithLoginUser(Long scheduleId, Long loginUserId, ScheduleUpdateRequestDto requestDto) {
@@ -266,21 +172,6 @@ public class ScheduleService {
 
         // 10. 응답 DTO로 반환하기
         return responseDto;
-    }
-
-    // 일정 삭제 기능
-    public void deleteSchedule(Long scheduleId) {
-
-        // 1. 해당 일정이 실제로 존재하는지 확인하기
-        boolean exists = scheduleRepository.existsById(scheduleId);
-
-        // 2. 존재하지 않으면 예외 발생시키기
-        if (!exists) {
-            throw new IllegalArgumentException("해당 일정이 존재하지 않습니다.");
-        }
-
-        // 3. scheduleId로 일정 삭제하기
-        scheduleRepository.deleteById(scheduleId);
     }
 
     // 로그인한 유저 ID를 기준으로 일정 삭제하는 기능
