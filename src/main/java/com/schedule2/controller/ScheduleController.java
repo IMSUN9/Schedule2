@@ -4,6 +4,7 @@ import com.schedule2.dto.ScheduleCreateRequestDto;
 import com.schedule2.dto.ScheduleResponseDto;
 import com.schedule2.dto.ScheduleUpdateRequestDto;
 import com.schedule2.service.ScheduleService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +28,24 @@ public class ScheduleController {
     // 기능
     // 일정 생성 요청을 처리하는 메서드
     @PostMapping
-    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleCreateRequestDto requestDto) {
-        ScheduleResponseDto responseDto = scheduleService.createSchedule(requestDto);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleCreateRequestDto requestDto, HttpSession session) {
+
+        // 1. 세션에서 로그인 유저 ID 꺼내기
+        Long loginUserId = (Long) session.getAttribute("loginUserId");
+
+        // 2. 로그인하지 않은 경우 예외 발생시키기
+        if (loginUserId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
+        // 3. 서비스에게 로그인 유저 기준 일정 생성 맡기기
+        ScheduleResponseDto responseDto = scheduleService.createScheduleWithLoginUser(loginUserId, requestDto);
+
+        // 4. 생성 결과를 HTTP 응답 객체로 만들기
+        ResponseEntity<ScheduleResponseDto> responseEntity = ResponseEntity.ok(responseDto);
+
+        // 5. 최종 응답 반환하기
+        return responseEntity;
     }
 
     // 일정 전체 조회 요청을 처리하는 메서드

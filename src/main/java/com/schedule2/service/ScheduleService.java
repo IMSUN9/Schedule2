@@ -75,6 +75,45 @@ public class ScheduleService {
         return scheduleResponseDto;
     }
 
+    // 로그인한 유저 ID를 기준으로 일정 생성하는 기능
+    public ScheduleResponseDto createScheduleWithLoginUser(Long loginUserId, ScheduleCreateRequestDto requestDto) {
+
+        // 1. loginUserId로 유저 조회하기
+        Optional<User> optionalUser = userRepository.findById(loginUserId);
+
+        // 2. 해당 유저가 없으면 예외 발생시키기
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("로그인한 유저가 존재하지 않습니다.");
+        }
+
+        // 3.Optional 안에 들어있는 실제 User 꺼내기
+        User user = optionalUser.get();
+
+        // 4. 요청 값 꺼내기
+        String title = requestDto.getTitle();
+        String contents = requestDto.getContents();
+
+        // 5. User 엔티티를 바로 사용해서 Schedule 엔티티 만들기
+        Schedule schedule = new Schedule(user, title, contents);
+
+        // 6. DB에 저장하기
+        Schedule savedSchedule = scheduleRepository.save(schedule);
+
+        // 7. 저장 결과를 응답 DTO로 바꾸기
+        ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto(
+                savedSchedule.getId(),
+                savedSchedule.getUserId(),
+                savedSchedule.getUserNameFromUser(),
+                savedSchedule.getTitle(),
+                savedSchedule.getContents(),
+                savedSchedule.getCreatedAt(),
+                savedSchedule.getUpdatedAt()
+        );
+
+        // 8. 응답 DTO 반환하기
+        return scheduleResponseDto;
+    }
+
     // 일정 전체 조회 기능
     public List<ScheduleResponseDto> getAllSchedules() {
 
