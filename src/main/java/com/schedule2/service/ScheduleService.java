@@ -220,6 +220,54 @@ public class ScheduleService {
         return responseDto;
     }
 
+    // 로그인한 유저 ID를 기준으로 일정 수정하는 기능
+    @Transactional
+    public ScheduleResponseDto updateScheduleWithLoginUser(Long scheduleId, Long loginUserId, ScheduleUpdateRequestDto requestDto) {
+
+        // 1. scheduleId로 기존 일정 조회하기
+        Optional<Schedule> optionalSchedule = scheduleRepository.findById(scheduleId);
+
+        // 2. 해당 일정이 없으면 예외 발생시키기
+        if (optionalSchedule.isEmpty()) {
+            throw new IllegalArgumentException("해당 일정이 존재하지 않습니다.");
+        }
+
+        // 3. Optional 안에 들어있는 실제 Schedule 꺼내기
+        Schedule schedule = optionalSchedule.get();
+
+        // 4. loginUserId로 로그인한 유저 조회하기
+        Optional<User> optionalUser = userRepository.findById(loginUserId);
+
+        // 5. 로그인한 유저가 없으면 예외 발생시키기
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("로그인한 유저가 존재하지 않습니다.");
+        }
+
+        // 6. Optional 안에 들어있는 실제 User 꺼내기
+        User user = optionalUser.get();
+
+        // 7. 요청값 꺼내기
+        String title = requestDto.getTitle();
+        String contents = requestDto.getContents();
+
+        // 8. 로그인한 유저 기준으로 일정 수정하기
+        schedule.updateSchedule(user, title, contents);
+
+        // 9. 수정된 엔티티를 응답 DTO로 바꾸기
+        ScheduleResponseDto responseDto = new ScheduleResponseDto(
+                schedule.getId(),
+                schedule.getUserId(),
+                schedule.getUserNameFromUser(),
+                schedule.getTitle(),
+                schedule.getContents(),
+                schedule.getCreatedAt(),
+                schedule.getUpdatedAt()
+        );
+
+        // 10. 응답 DTO로 반환하기
+        return responseDto;
+    }
+
     // 일정 삭제 기능
     public void deleteSchedule(Long scheduleId) {
 

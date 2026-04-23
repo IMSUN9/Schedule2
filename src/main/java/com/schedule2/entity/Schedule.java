@@ -60,18 +60,6 @@ public class Schedule extends BaseEntity {
         return user;
     }
 
-    // 일정과 유저를 연결하는 기능
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    // User 엔티티를 바로 받아서 일정 정보를 수정하는 기능
-    public void updateSchedule(User user, String title, String contents) {
-        this.user = user;
-        this.title = title;
-        this.contents = contents;
-    }
-
     // 연결된 유저 ID 조회
     public Long getUserId() {
         if (user == null) {
@@ -88,6 +76,18 @@ public class Schedule extends BaseEntity {
         }
 
         return user.getUsername();
+    }
+
+    // 일정과 유저를 연결하는 기능
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    // User 엔티티를 바로 받아서 일정 정보를 수정하는 기능
+    public void updateSchedule(User user, String title, String contents) {
+        this.user = user;
+        this.title = title;
+        this.contents = contents;
     }
 
 }

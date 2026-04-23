@@ -78,15 +78,23 @@ public class ScheduleController {
 
     // 일정 수정 요청을 처리하는 메서드
     @PutMapping("/{scheduleId}")
-    public ResponseEntity<ScheduleResponseDto> updateSchedule(@PathVariable Long scheduleId, @RequestBody ScheduleUpdateRequestDto requestDto) {
+    public ResponseEntity<ScheduleResponseDto> updateSchedule(@PathVariable Long scheduleId, @RequestBody ScheduleUpdateRequestDto requestDto, HttpSession session) {
 
-        // 1. 서비스에게 일정 수정 작업 맡기기
-        ScheduleResponseDto responseDto = scheduleService.updateSchedule(scheduleId, requestDto);
+       // 1. 세션에서 로그인 유저 ID 꺼내기
+        Long loginUserId = (Long) session.getAttribute("loginUserId");
 
-        // 2. 수정 결과를 HTTP 응답 객체로 만들기
+        // 2. 로그인하지 않은 경우 예외 발생시키기
+        if (loginUserId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
+        // 3. 서비스에게 로그인 유저 기준 일정 수정 맡기기
+        ScheduleResponseDto responseDto = scheduleService.updateScheduleWithLoginUser(scheduleId, loginUserId, requestDto);
+
+        // 4. 수정 결과를 HTTP 응답 객체로 만들기
         ResponseEntity<ScheduleResponseDto> responseEntity = ResponseEntity.ok(responseDto);
 
-        // 3. 최종 응답 반환하기
+        // 5. 최종 응답 반환하기
         return responseEntity;
     }
 
