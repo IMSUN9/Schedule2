@@ -1,10 +1,8 @@
 package com.schedule2.controller;
 
-import com.schedule2.dto.SignupRequestDto;
-import com.schedule2.dto.UserCreateRequestDto;
-import com.schedule2.dto.UserResponseDto;
-import com.schedule2.dto.UserUpdateRequestDto;
+import com.schedule2.dto.*;
 import com.schedule2.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -108,4 +106,21 @@ public class UserController {
         // 3. 최종 응답 반환하기
         return responseEntity;
     }
+
+    // 로그인 요청을 처리하는 메서드
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto requestDto, HttpSession session) {
+
+        // 1. 서비스에세 로그인 작업 맡기기
+        String message = userService.login(requestDto, session);
+
+        // 2. 로그인 결과를 HTTP 응답 객체로 만들기
+        ResponseEntity<String> responseEntity = ResponseEntity.ok(message);
+
+        // 3. 최종 응답 반환하기
+        return responseEntity;
+    }
+
+
+
 }

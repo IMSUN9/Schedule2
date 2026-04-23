@@ -53,6 +53,10 @@ public class User extends BaseEntity {
         return email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     // 유저 정보 수정 기능
     public void updateUser(String username, String email) {
         this.username = username;

@@ -1,11 +1,9 @@
 package com.schedule2.service;
 
-import com.schedule2.dto.SignupRequestDto;
-import com.schedule2.dto.UserCreateRequestDto;
-import com.schedule2.dto.UserResponseDto;
-import com.schedule2.dto.UserUpdateRequestDto;
+import com.schedule2.dto.*;
 import com.schedule2.entity.User;
 import com.schedule2.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -186,6 +184,36 @@ public class UserService {
 
         // 6. 응답 DTO 반환하기
         return responseDto;
+    }
+
+    // 로그인 기능
+    public String login(LoginRequestDto requestDto, HttpSession session) {
+
+        // 1. 요청값 꺼내기
+        String email = requestDto.getEmail();
+        String password = requestDto.getPassword();
+
+        // 2. 이메일로 유저 조회하기
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        // 3. 해당 이메일의 유저가 없으면 예외 발생시키기
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("해당 이메일의 유저가 존재하지 않습니다.");
+        }
+
+        // 4. Optional 안에 들어있는 실제 User 꺼내기
+        User user = optionalUser.get();
+
+        // 5. 비밀번호가 일치하는지 확인하기
+        if (!user.getPassword().equals(password)) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 6. 세션에 로그인 유저 정보 저장하기
+        session.setAttribute("loginUserId", user.getId());
+
+        // 7. 로그인 성공 메시지 반환하기
+        return "로그인 성공";
     }
 
 }
