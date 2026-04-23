@@ -30,15 +30,16 @@ public class UserService {
         // 1. 요청 값 꺼내기
         String username = requestDto.getUsername();
         String email = requestDto.getEmail();
+        String password = requestDto.getPassword();
 
         // 2. 요청값으로 User 엔티티 만들기
-        User user = new User(username, email);
+        User user = new User(username, email, password);
 
         // 3. DB에 저장하기
         User savedUser = userRepository.save(user);
 
         // 4. 저장된 결과를 응답 DTO로 바꾸기
-        UserResponseDto userResponseDto = new UserResponseDto(
+        UserResponseDto responseDto = new UserResponseDto(
                 savedUser.getId(),
                 savedUser.getUsername(),
                 savedUser.getEmail(),
@@ -47,7 +48,7 @@ public class UserService {
         );
 
         // 5. 응답 DTO 반환하기
-        return userResponseDto;
+        return responseDto;
     }
 
     // 유저 전체 조회 기능

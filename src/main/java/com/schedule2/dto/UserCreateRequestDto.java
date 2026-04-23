@@ -6,6 +6,7 @@ public class UserCreateRequestDto {
     // 속성
     private String username;
     private String email;
+    private String password;
 
     // 생성자
     public UserCreateRequestDto() {
@@ -18,5 +19,9 @@ public class UserCreateRequestDto {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
