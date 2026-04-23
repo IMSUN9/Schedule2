@@ -283,4 +283,29 @@ public class ScheduleService {
         scheduleRepository.deleteById(scheduleId);
     }
 
+    // 로그인한 유저 ID를 기준으로 일정 삭제하는 기능
+    public void deleteScheduleWithLoginUser(Long scheduleId, Long loginUserId) {
+
+        // 1. scheduleId로 기존 일정 조회하기
+        Optional<Schedule> optionalSchedule = scheduleRepository.findById(scheduleId);
+
+        // 2. 해당 일정이 없으면 예외 발생시키기
+        if (optionalSchedule.isEmpty()) {
+            throw new IllegalArgumentException("해당 일정이 존재하지 않습니다.");
+        }
+
+        // 3. Optional 안에 들어있는 실제 Schedule 꺼내기
+        Schedule schedule = optionalSchedule.get();
+
+        // 4. 로그인한 유저의 일정인지 확인하기
+        Long scheduleUserId = schedule.getUserId();
+
+        if (scheduleUserId == null || !scheduleUserId.equals(loginUserId)) {
+            throw new IllegalArgumentException("본인 일정만 삭제할 수 있습니다.");
+        }
+
+        // 5. 일정 삭제하기
+        scheduleRepository.deleteById(scheduleId);
+    }
+
 }

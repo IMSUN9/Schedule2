@@ -100,15 +100,23 @@ public class ScheduleController {
 
     // 일정 삭제 요청을 처리하는 메서드
     @DeleteMapping("/{scheduleId}")
-    public ResponseEntity<Void> deleteSchedule(@PathVariable Long scheduleId) {
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Long scheduleId, HttpSession session) {
 
-        // 1. 서비스에게 일정 삭제 작업 맡기기
-        scheduleService.deleteSchedule(scheduleId);
+        // 1. 세션에서 로그인 유저 ID 꺼내기
+        Long loginUserId = (Long) session.getAttribute("loginUserId");
 
-        // 2. 내용 없는 성공 응답 객체 만들기
+        // 2. 로그인하지 않은 경우 예외 발생시키기
+        if (loginUserId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
+        // 3. 서비스에게 로그인 유저 기준 일정 삭제 맡기기
+        scheduleService.deleteScheduleWithLoginUser(scheduleId, loginUserId);
+
+        // 4. 내용 없는 성공 응답 객체 만들기
         ResponseEntity<Void> responseEntity = ResponseEntity.noContent().build();
 
-        // 3. 최종 응답 반환하기
+        // 5. 최종 응답 반환하기
         return responseEntity;
     }
 }
